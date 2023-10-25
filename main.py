@@ -1,4 +1,5 @@
 from typing import Dict, List
+from generalFunctions import smartInput
 
 world = {}
 chunkLocation = [0,0]
@@ -38,8 +39,7 @@ def changePlayerLocation(chunkX:int,chunkY,playerX:int,playerY:int):
         print("Invalid Position")
         return -1
 
-addChunk()
-printChunk()
-changePlayerLocation(5,5)
-print("\n")
-printChunk()
+# Game Loop
+inPlay = True
+while inPlay:
+    userInput = smartInput("Enter Direction",validinput=("W","A","S","D"),case="upper")
