@@ -4,9 +4,9 @@ def smartInput(msg:str,datatype:str=str,bounds=None,validinput=None,case:str=Non
             user = datatype(input(msg))
             if case != None:
                 if case == "upper":
-                    str.upper(user)
+                    user = user.upper()
                 elif case == "lower":
-                    str.lower(user)
+                    user = user.lower()
             if bounds != None:
                 if not bounds[0] <= user <= bounds[1]:
                     raise ValueError
