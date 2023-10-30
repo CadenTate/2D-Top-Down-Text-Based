@@ -27,7 +27,7 @@ def printChunk(chunkX:int,chunkY:int):
 def changePlayerLocation(newChunkX:int,newChunkY,newPlayerX:int,newPlayerY:int):
     global playerLocationX, playerLocationY, currentTile
     # Verify within boundaries
-    if newChunkX not in world or newChunkY not in world:    
+    if newChunkX not in world or newChunkY not in world[newChunkX]:
         addChunk(newChunkX,newChunkY)
     if newPlayerX >= 9:
         newPlayerX = 0
@@ -55,7 +55,10 @@ while inPlay:
     print(userInput)
     match userInput:
         case "W":
-            changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX,playerLocationY-1)
+            if playerLocationY - 1 <= 0: 
+                changePlayerLocation(chunkLocationX,chunkLocationY - 1,playerLocationX,playerLocationY-1)
+            else: 
+                changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX,playerLocationY-1)
         case "A":
             changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX-1,playerLocationY)
         case "S":
