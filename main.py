@@ -8,7 +8,7 @@ chunkLocationY = 0
 playerLocationX = 5
 playerLocationY = 5
 currentTile = "X"
-availableTiles = ["X","X","X","X","X","X","X","X","W","W"]
+availableTiles = ["g","g","g","g","g","g","g","g","w","w"]
 
 def addChunk(newChunkX:int,newChunkY:int):
     world[newChunkX] = {}
@@ -27,7 +27,7 @@ def printChunk(chunkX:int,chunkY:int):
 def changePlayerLocation(newChunkX:int,newChunkY,newPlayerX:int,newPlayerY:int):
     global playerLocationX, playerLocationY, currentTile
     # Verify within boundaries
-    if newChunkX != world or newChunkY != world:    
+    if newChunkX not in world or newChunkY not in world:    
         addChunk(newChunkX,newChunkY)
     if newPlayerX >= 9:
         newPlayerX = 0
