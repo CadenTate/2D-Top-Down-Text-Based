@@ -1,6 +1,7 @@
 from typing import Dict, List
 from generalFunctions import smartInput
 import random
+import characters
 
 world = {}
 chunkLocationX = 0
@@ -11,7 +12,7 @@ currentTile = "g"
 availableTiles = ["g","g","g","g","g","g","g","g","w","w"]
 
 def addChunk(newChunkX:int,newChunkY:int):
-    if newChunkX != None:
+    if newChunkX not in world:
         world[newChunkX] = {}
     world[newChunkX][newChunkY] = []
     for i in range(81):
@@ -31,7 +32,7 @@ def changePlayerLocation(newChunkX:int,newChunkY,newPlayerX:int,newPlayerY:int):
     if newChunkX not in world:
         addChunk(newChunkX,newChunkY)
     elif newChunkY not in world[newChunkX]:
-        addChunk(None,newChunkY)
+        addChunk(newChunkX,newChunkY)
 
     if newPlayerX == 10:
         newPlayerX = 1
@@ -55,6 +56,7 @@ def changePlayerLocation(newChunkX:int,newChunkY,newPlayerX:int,newPlayerY:int):
     world[chunkLocationX][chunkLocationY][(playerLocationY - 1) * 9 + playerLocationX - 1] = "O"
 
 # Game Setup
+player = characters.Player(smartInput("Player Name: "))
 inPlay = True
 addChunk(0,0)
 changePlayerLocation(0,0,5,5)
@@ -69,7 +71,7 @@ while inPlay:
     match userInput:
         case "W":
             if playerLocationY - 1 == 0: 
-                changePlayerLocation(chunkLocationX,chunkLocationY - 1,playerLocationX,playerLocationY - 1)
+                changePlayerLocation(chunkLocationX,chunkLocationY + 1,playerLocationX,playerLocationY - 1)
             else: 
                 changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX,playerLocationY-1)
         case "A":
@@ -79,7 +81,7 @@ while inPlay:
                 changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX-1,playerLocationY)
         case "S":
             if playerLocationY + 1 == 10:
-                changePlayerLocation(chunkLocationX,chunkLocationY + 1,playerLocationX,playerLocationY+1)
+                changePlayerLocation(chunkLocationX,chunkLocationY - 1,playerLocationX,playerLocationY+1)
             else:
                 changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX,playerLocationY+1)
         case "D":
