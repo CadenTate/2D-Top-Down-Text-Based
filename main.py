@@ -1,8 +1,10 @@
+# Import Required Dependencies
 from typing import Dict, List
 from generalFunctions import smartInput
 import random
 import characters
 
+# Initialize Class Level Variables
 world = {}
 chunkLocationX = 0
 chunkLocationY = 0
@@ -10,14 +12,20 @@ playerLocationX = 5
 playerLocationY = 5
 currentTile = "g"
 availableTiles = ["g","g","g","g","g","g","g","g","w","w"]
+activeMonsters = []
 
+# Creates a new chunk, populates it, and adds it to the world
 def addChunk(newChunkX:int,newChunkY:int):
+    global activeMonsters
     if newChunkX not in world:
         world[newChunkX] = {}
     world[newChunkX][newChunkY] = []
     for i in range(81):
         world[newChunkX][newChunkY].append(random.choice(availableTiles))
+    for i in range(0,random.randint(0,4)):
+        activeMonsters.append(characters.Slime(newChunkX,newChunkY,random.randint(0,9),random.randint(0,9)))
 
+# Print out the chunk in the correct format
 def printChunk(chunkX:int,chunkY:int):
     chunk = world[chunkX][chunkY]
     for i, tile in enumerate(chunk, 1):
@@ -90,3 +98,8 @@ while inPlay:
             else:
                 changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX+1,playerLocationY)
     printChunk(chunkLocationX,chunkLocationY)
+    for monster in activeMonsters:
+        print(monster)
+        if monster.location() == (chunkLocationX,chunkLocationY,playerLocationX,playerLocationY):
+            # TODO combat system 
+            pass

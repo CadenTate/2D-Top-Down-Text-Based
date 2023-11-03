@@ -1,7 +1,7 @@
 import characters
 
-slime1 = characters.Slime()
-player = characters.Player("Caden")
+monsters = []
 
-print(slime1)
-print(player)
+monsters.append(characters.Slime(0,0,0,0))
+
+print(monsters[0])
