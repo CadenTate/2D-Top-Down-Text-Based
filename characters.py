@@ -1,7 +1,8 @@
 from typing import Tuple
 
 class Monster:
-    def __init__(self,chunkX:int,chunkY:int,playerX:int,playerY:int) -> None:
+    def __init__(self,type:str,chunkX:int,chunkY:int,playerX:int,playerY:int) -> None:
+        self.type = type
         self.chunkX = chunkX
         self.chunkY = chunkY
         self.locationX = playerX
@@ -21,6 +22,12 @@ class Monster:
 
     def location(self) -> Tuple[int,int,int,int]:
         return (self.chunkX,self.chunkY,self.locationX,self.locationY)
+    
+    def getType(self) -> str:
+        return self.type
+    
+    def getHealth(self) -> int:
+        return self.health
 
     def __str__(self) -> str:
         return f"Health: {self.health} | Chunk: {self.chunkX} {self.chunkY} | Location: {self.locationX} {self.locationY}"
@@ -30,7 +37,7 @@ class Slime(Monster):
     health = 5
 
     def __init__(self,chunkX:int,chunkY:int,playerX:int,playerY:int) -> None:
-        super().__init__(chunkX,chunkY,playerX,playerY)
+        super().__init__("slime",chunkX,chunkY,playerX,playerY)
 
 class Player:
     MAX_HEALTH = 10

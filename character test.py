@@ -1,7 +1,13 @@
 import characters
 
-monsters = []
+def displayArena(player:characters.Player,monster:characters):
+    match monster.getType():
+        case "slime":
+            print("""
+   /-------\\
+  /         \\
+ /  O     O  \\
+/    [---]    \\
+\\=============/""") 
 
-monsters.append(characters.Slime(0,0,0,0))
-
-print(monsters[0])
+displayArena(characters.Player("Caden"),characters.Slime(0,0,0,0))

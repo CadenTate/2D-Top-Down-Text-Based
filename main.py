@@ -20,10 +20,14 @@ def addChunk(newChunkX:int,newChunkY:int):
     if newChunkX not in world:
         world[newChunkX] = {}
     world[newChunkX][newChunkY] = []
+
+    # Add tiles to world
     for i in range(81):
         world[newChunkX][newChunkY].append(random.choice(availableTiles))
-    for i in range(0,random.randint(0,4)):
-        activeMonsters.append(characters.Slime(newChunkX,newChunkY,random.randint(0,9),random.randint(0,9)))
+
+    # Add Monsters to world
+    for i in range(0,random.randint(4,9)):
+        activeMonsters.append(characters.Slime(newChunkX,newChunkY,random.randint(1,10),random.randint(1,10)))
 
 # Print out the chunk in the correct format
 def printChunk(chunkX:int,chunkY:int):
@@ -63,6 +67,18 @@ def changePlayerLocation(newChunkX:int,newChunkY,newPlayerX:int,newPlayerY:int):
     # Put player at the new location
     world[chunkLocationX][chunkLocationY][(playerLocationY - 1) * 9 + playerLocationX - 1] = "O"
 
+def displayArena(player:characters.Player,monster:characters):
+    match monster.getType():
+        case "slime":
+            print("""
+   /-------\\
+  /         \\
+ /  O     O  \\
+/    [---]    \\
+\\=============/""")
+            print(monster)
+
+
 # Game Setup
 player = characters.Player(smartInput("Player Name: "))
 inPlay = True
@@ -99,7 +115,6 @@ while inPlay:
                 changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX+1,playerLocationY)
     printChunk(chunkLocationX,chunkLocationY)
     for monster in activeMonsters:
-        print(monster)
         if monster.location() == (chunkLocationX,chunkLocationY,playerLocationX,playerLocationY):
             # TODO combat system 
-            pass
+            displayArena(player,monster)
