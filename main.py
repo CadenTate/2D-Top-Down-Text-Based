@@ -27,7 +27,7 @@ def addChunk(newChunkX:int,newChunkY:int):
 
     # Add Monsters to world
     for i in range(0,random.randint(4,9)):
-        activeMonsters.append(characters.Slime(newChunkX,newChunkY,random.randint(1,10),random.randint(1,10)))
+        activeMonsters.append(characters.Slime(newChunkX,newChunkY,random.randint(1,9),random.randint(1,9)))
 
 # Print out the chunk in the correct format
 def printChunk(chunkX:int,chunkY:int):
@@ -67,7 +67,7 @@ def changePlayerLocation(newChunkX:int,newChunkY,newPlayerX:int,newPlayerY:int):
     # Put player at the new location
     world[chunkLocationX][chunkLocationY][(playerLocationY - 1) * 9 + playerLocationX - 1] = "O"
 
-def displayArena(player:characters.Player,monster:characters):
+def displayArena(player:characters.Player,monster):
     match monster.getType():
         case "slime":
             print("""
@@ -76,7 +76,8 @@ def displayArena(player:characters.Player,monster:characters):
  /  O     O  \\
 /    [---]    \\
 \\=============/""")
-            print(monster)
+        
+    print(monster, "\n")
 
 
 # Game Setup
@@ -84,14 +85,13 @@ player = characters.Player(smartInput("Player Name: "))
 inPlay = True
 addChunk(0,0)
 changePlayerLocation(0,0,5,5)
-printChunk(chunkLocationX,chunkLocationY)
 
 # Game Loop
 while inPlay:
+    printChunk(chunkLocationX,chunkLocationY)
     print(chunkLocationX,chunkLocationY)
     print(playerLocationX,playerLocationY)
     userInput = smartInput("Enter Direction (W|A|S|D): ",validinput=("W","A","S","D"),case="upper")
-    print(userInput)
     match userInput:
         case "W":
             if playerLocationY - 1 == 0: 
@@ -113,8 +113,54 @@ while inPlay:
                 changePlayerLocation(chunkLocationX + 1,chunkLocationY,playerLocationX+1,playerLocationY)
             else:
                 changePlayerLocation(chunkLocationX,chunkLocationY,playerLocationX+1,playerLocationY)
-    printChunk(chunkLocationX,chunkLocationY)
+
+    # Combat System
     for monster in activeMonsters:
         if monster.location() == (chunkLocationX,chunkLocationY,playerLocationX,playerLocationY):
-            # TODO combat system 
+            # Combat Loop
             displayArena(player,monster)
+            while True:
+                # Player Turn
+                if player.isAlive:
+                    combat = smartInput(f"{player.getName()}'s Turn (attack, crit, life steal (steal), flee): ",validinput=("attack","crit","steal","block","flee"))
+                    match combat:
+                        case "attack":
+                            player.attack(monster,False)
+                        case "crit":
+                            player.attack(monster,True)
+                        case "block":
+                            player.block(monster)
+                        case "flee":
+                            if player.canFlee():
+                                print("RUN AWAY!!!")
+                                break
+                            else:
+                                print("STAY AND FIGHT COWARD!!!")
+                        case "steal":
+                            amount = smartInput("Attempt Amount: ",int)
+                            player.stealHealth(monster, amount)
+                else:
+                    print("You Died! Thanks For Playing!")
+                    inPlay = False
+                    break
+                print(f"Monster: {monster}")
+
+                # Slime Turn 
+                # come back later to make work for different monster types 
+                if monster.isAlive:
+                    slimeMove = random.randint(1,10)
+                    if slimeMove >= 1 and slimeMove <= 5:
+                        monster.attack(player)
+                        print("Slime Attacked!")
+                    elif slimeMove >= 6 and slimeMove <= 8: 
+                        monster.goop(player)
+                        print("Slime Gooped on You! (this blocks next attack)")
+                    else:
+                        print("Slime missed its attack!")
+
+                    print(player)
+                    print()
+                else:
+                    print("Great Job! You Killed It!\n")
+                    activeMonsters.pop(activeMonsters.index(monster))
+                    break
