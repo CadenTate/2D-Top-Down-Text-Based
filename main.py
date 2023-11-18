@@ -26,6 +26,8 @@ def addChunk(newChunkX:int,newChunkY:int):
         world[newChunkX][newChunkY].append(random.choice(availableTiles))
 
     # Add Monsters to world
+    # TODO Allow for different monster spawns depending on player level
+    # TODO Change spawning rules if player has already visited the chunk
     for i in range(0,random.randint(4,9)):
         activeMonsters.append(characters.Slime(newChunkX,newChunkY,random.randint(1,9),random.randint(1,9)))
 
@@ -128,8 +130,8 @@ while inPlay:
                             player.attack(monster,False)
                         case "crit":
                             player.attack(monster,True)
-                        case "block":
-                            player.block(monster)
+                        # case "block":
+                        #     player.block(monster)
                         case "flee":
                             if player.canFlee():
                                 print("RUN AWAY!!!")
@@ -137,8 +139,8 @@ while inPlay:
                             else:
                                 print("STAY AND FIGHT COWARD!!!")
                         case "steal":
-                            amount = smartInput("Attempt Amount: ",int)
-                            player.stealHealth(monster, amount)
+                            amount = smartInput("Attempt Amount: ",int) # type: ignore
+                            player.stealHealth(monster, amount) # type: ignore
                 else:
                     print("You Died! Thanks For Playing!")
                     inPlay = False
