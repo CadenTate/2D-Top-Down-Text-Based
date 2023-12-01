@@ -1,18 +1,16 @@
-from hmac import new
 from typing import Tuple
 import random
-
-from numpy import character
 
 # Base Class for Characters
 class Character:
     canAttack = True
     isAlive = True
 
-    def __init__(self,name:str,MAX_HEALTH:int,level:int) -> None:
+    def __init__(self,name:str,MAX_HEALTH:int,level:int,image=None) -> None:
         self.MAX_HEALTH = MAX_HEALTH
         self.health = MAX_HEALTH
         self.name = name
+        self.image = image
 
     # Health Manipulating Functions
     def setHealth(self,newHealth:int) -> None:
@@ -47,6 +45,9 @@ class Character:
         else: 
             print("Something blocks your attack!")
             self.canAttack = True
+    
+    def printImage(self):
+        print(self.image)
 
     # Other functions
     def getName(self) -> str:
@@ -58,7 +59,13 @@ class Character:
 # Class Slime
 class Slime(Character):
     def __init__(self) -> None:
-        super().__init__("Slime",5,1)
+        image =("""
+   /-------\\
+  /         \\
+ /  O     O  \\
+/    [---]    \\
+\\=============/""")
+        super().__init__("Slime",5,1,image)
 
 # Player Class
 class Player(Character):

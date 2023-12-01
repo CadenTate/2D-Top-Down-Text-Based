@@ -69,16 +69,8 @@ def changePlayerLocation(newChunkX:int,newChunkY,newPlayerX:int,newPlayerY:int):
     # Put player at the new location
     world[chunkLocationX][chunkLocationY][(playerLocationY - 1) * 9 + playerLocationX - 1] = "O"
 
-def displayArena(player:characters.Player,monster):
-    match monster.getType():
-        case "slime":
-            print("""
-   /-------\\
-  /         \\
- /  O     O  \\
-/    [---]    \\
-\\=============/""")
-        
+def displayArena(player:characters.Player,monster:characters.Character):
+    monster.printImage()    
     print(monster, "\n")
 
 
